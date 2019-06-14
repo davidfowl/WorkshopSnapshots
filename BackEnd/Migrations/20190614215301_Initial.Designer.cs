@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackEnd.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190614211912_Initial")]
+    [Migration("20190614215301_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,7 +22,7 @@ namespace BackEnd.Migrations
 
             modelBuilder.Entity("BackEnd.Models.Speaker", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -36,7 +36,7 @@ namespace BackEnd.Migrations
                     b.Property<string>("WebSite")
                         .HasMaxLength(1000);
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("Speakers");
                 });

@@ -43,7 +43,7 @@ namespace BackEnd.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSpeaker(int id, Speaker speaker)
         {
-            if (id != speaker.ID)
+            if (id != speaker.Id)
             {
                 return BadRequest();
             }
@@ -76,7 +76,7 @@ namespace BackEnd.Controllers
             _context.Speakers.Add(speaker);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSpeaker", new { id = speaker.ID }, speaker);
+            return CreatedAtAction("GetSpeaker", new { id = speaker.Id }, speaker);
         }
 
         // DELETE: api/Speakers/5
@@ -97,7 +97,7 @@ namespace BackEnd.Controllers
 
         private bool SpeakerExists(int id)
         {
-            return _context.Speakers.Any(e => e.ID == id);
+            return _context.Speakers.Any(e => e.Id == id);
         }
     }
 }
