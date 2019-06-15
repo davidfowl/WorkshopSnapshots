@@ -114,5 +114,19 @@ namespace FrontEnd.Services
 
             response.EnsureSuccessStatusCode();
         }
+
+        public async Task<List<SearchResult>> SearchAsync(string query)
+        {
+            var term = new SearchTerm
+            {
+                Query = query
+            };
+
+            var response = await _httpClient.PostAsJsonAsync($"/api/search", term);
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<List<SearchResult>>();
+        }
     }
 }
