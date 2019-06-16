@@ -128,5 +128,28 @@ namespace FrontEnd.Services
 
             return await response.Content.ReadAsAsync<List<SearchResult>>();
         }
+
+        public async Task AddSessionToAttendeeAsync(string name, int sessionId)
+        {
+            var response = await _httpClient.PostAsync($"/api/attendees/{name}/session/{sessionId}", null);
+
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task RemoveSessionFromAttendeeAsync(string name, int sessionId)
+        {
+            var response = await _httpClient.DeleteAsync($"/api/attendees/{name}/session/{sessionId}");
+
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task<List<SessionResponse>> GetSessionsByAttendeeAsync(string name)
+        {
+            var response = await _httpClient.GetAsync($"/api/attendees/{name}/sessions");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<List<SessionResponse>>();
+        }
     }
 }

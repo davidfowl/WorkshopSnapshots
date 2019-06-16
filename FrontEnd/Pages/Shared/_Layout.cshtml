@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - FrontEnd</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://unpkg.com/ionicons@4.5.5/dist/css/ionicons.min.css" />
 </head>
 <body>
     <header>
@@ -20,10 +21,16 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Agenda</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-page="/Search">Search</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                        </li>
+                        <li class="nav-item" authz="true">
+                            <a class="nav-link text-dark" asp-page="/MyAgenda">My Agenda</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>

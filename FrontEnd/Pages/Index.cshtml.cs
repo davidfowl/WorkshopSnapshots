@@ -13,12 +13,10 @@ namespace FrontEnd.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> logger;
         protected readonly IApiClient _apiClient;
 
-        public IndexModel(ILogger<IndexModel> _logger, IApiClient apiClient)
+        public IndexModel(IApiClient apiClient)
         {
-            logger = _logger;
             _apiClient = apiClient;
         }
 
@@ -29,6 +27,8 @@ namespace FrontEnd.Pages
         public IEnumerable<(int Offset, DayOfWeek? DayofWeek)> DayOffsets { get; set; }
 
         public int CurrentDayOffset { get; set; }
+
+        public List<int> UserSessions { get; set; } = new List<int>();
 
         [TempData]
         public string Message { get; set; }
@@ -41,7 +41,13 @@ namespace FrontEnd.Pages
 
             CurrentDayOffset = day;
 
-            var sessions = await _apiClient.GetSessionsAsync();
+            if (User.Identity.IsAuthenticated)
+            {
+                var userSessions = await _apiClient.GetSessionsByAttendeeAsync(User.Identity.Name);
+                UserSessions = userSessions.Select(u => u.Id).ToList();
+            }
+
+            var sessions = await GetSessionsAsync();
 
             var startDate = sessions.Min(s => s.StartTime?.Date);
             var endDate = sessions.Max(s => s.EndTime?.Date);
@@ -57,6 +63,25 @@ namespace FrontEnd.Pages
                                .OrderBy(s => s.TrackId)
                                .GroupBy(s => s.StartTime)
                                .OrderBy(g => g.Key);
+        }
+
+        protected virtual Task<List<SessionResponse>> GetSessionsAsync()
+        {
+            return _apiClient.GetSessionsAsync();
+        }
+
+        public async Task<IActionResult> OnPostAsync(int sessionId)
+        {
+            await _apiClient.AddSessionToAttendeeAsync(User.Identity.Name, sessionId);
+
+            return RedirectToPage();
+        }
+
+        public async Task<IActionResult> OnPostRemoveAsync(int sessionId)
+        {
+            await _apiClient.RemoveSessionFromAttendeeAsync(User.Identity.Name, sessionId);
+
+            return RedirectToPage();
         }
     }
 }
