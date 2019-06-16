@@ -21,7 +21,8 @@ namespace FrontEnd.Areas.Identity
 
                 services.AddDefaultIdentity<User>()
                     .AddDefaultUI(UIFramework.Bootstrap4)
-                    .AddEntityFrameworkStores<IdentityDbContext>();
+                    .AddEntityFrameworkStores<IdentityDbContext>()
+                    .AddClaimsPrincipalFactory<ClaimsPrincipalFactory>();
             });
         }
     }
