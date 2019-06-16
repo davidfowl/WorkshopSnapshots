@@ -37,7 +37,7 @@ namespace BackEnd
                 }
                 else
                 {
-                    // options.UseSqlite("Data Source=conferences.db");
+                    options.UseSqlite("Data Source=conferences.db");
                 }
             });
 
