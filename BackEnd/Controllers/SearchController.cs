@@ -13,18 +13,18 @@ namespace BackEnd.Controllers
     [ApiController]
     public class SearchController : ControllerBase
     {
-        private readonly ApplicationDbContext _db;
+        private readonly ApplicationDbContext _context;
 
-        public SearchController(ApplicationDbContext db)
+        public SearchController(ApplicationDbContext context)
         {
-            _db = db;
+            _context = context;
         }
 
         [HttpPost]
         public async Task<ActionResult<List<SearchResult>>> Search(SearchTerm term)
         {
             var query = term.Query;
-            var sessionResults = await _db.Sessions.Include(s => s.Track)
+            var sessionResults = await _context.Sessions.Include(s => s.Track)
                                                 .Include(s => s.SessionSpeakers)
                                                     .ThenInclude(ss => ss.Speaker)
                                                 .Where(s =>
@@ -33,7 +33,7 @@ namespace BackEnd.Controllers
                                                 )
                                                 .ToListAsync();
 
-            var speakerResults = await _db.Speakers.Include(s => s.SessionSpeakers)
+            var speakerResults = await _context.Speakers.Include(s => s.SessionSpeakers)
                                                     .ThenInclude(ss => ss.Session)
                                                 .Where(s =>
                                                     s.Name.Contains(query) ||
