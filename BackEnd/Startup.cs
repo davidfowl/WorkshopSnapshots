@@ -48,6 +48,9 @@ namespace BackEnd
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "Conference Planner API", Version = "v1" });
                 options.DescribeAllEnumsAsStrings();
             });
+
+            services.AddHealthChecks()
+                    .AddDbContextCheck<ApplicationDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,6 +76,7 @@ namespace BackEnd
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
             });
 
             app.Run(context =>
